@@ -67,7 +67,7 @@ class Enivronment:
 					print "\t",neighbor[0],"in closed list"
 					continue
 
-				if neighbor[0] not in [nd[2][0] for nd in openSet] or tentative_g_score<gDict[neighbor[0]]:
+				if neighbor[0] not in [nd[2] for nd in openSet] or tentative_g_score<gDict[neighbor[0]]:
 					parent[neighbor[0]]= checkNode
 					gDict[neighbor[0]] = tentative_g_score
 					fDict[neighbor[0]] = gDict[neighbor[0]] + heuristic(neighbor[0],goal)
