@@ -1,0 +1,20 @@
+####################################
+
+GROUP MEMBERS:
+	Vismay Raj T   (111601030)
+	Roshin Raphel  (111601018)
+	Shubham Gupta  (111601018)
+
+####################################
+
+Question 1:
+	Here in the n square minus 1 puzzle. the idea is to move the empty cell in possible directions 
+	(ie ,  up, down, left, right). and this if we list accordingly will generate a graph.
+	and doing a bfs in this graph will yeald us the answer.
+
+Question 2:
+	In this lab the idea was to create a random maze for doing dijkstra and a star later . And to 
+	create such an environment. hill generation algorithm is used. 
+	in this algorithm we'll first select a random point , then we'll select a random radius lying
+	betweem 0 and a certain value. Once we have the position and radius ready. Then we will change
+	the blocks lying around that point with that radius to be 1 (ie, not-permitting)

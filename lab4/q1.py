@@ -1,5 +1,6 @@
 import sys
 import numpy as np
+import copy
 
 # x will be a truth value of an evaluated boolean expression
 def indicator(x):
@@ -34,7 +35,7 @@ class Environment:
 		ex = self.emptyX
 		ey = self.emptyY
 
-		if not (ex+dirn[0] < self.dim and ey+dirn[1] < self.dim):
+		if (ex+dirn[0] >= self.dim or ey+dirn[1] >= self.dim or  ex+dirn[0]<0 or ey+dirn[1]<0 ):
 			return 0
 
 		self.mat[ex][ey] = self.mat[ex+dirn[0]][ey+dirn[1]]
@@ -60,22 +61,19 @@ class Environment:
 		print("current parity : " , parity)
 
 	def isGoal(self):
-		for i in (0,self.dim):
-			for j in (0,self.dim):
-				if self.mat.item((i,j)) != (i*self.dim+j):
+		for i in range(0,self.dim):
+			for j in range(0,self.dim):
+				if self.mat[i][j] != (i)*self.dim+j+1:
 					return 0
 		return 1
 
 	def equality(self,matrix):
-		for i in (0,self.dim):
-			for j in (0,self.dim):
+		for i in range (self.dim):
+			for j in range (self.dim):
 				if self.mat.item((i,j)) != i*self.dim+j:
 					return 0
 		return 1
 
-	def copy(self):
-		copy = self
-		return copy
 
 def EQ(mat1,mat2):
 	return np.array_equal(mat1.mat,mat2.mat)
@@ -85,25 +83,10 @@ if __name__ == "__main__":
 	print("commencing program")
 
 	print("loading matrix....")
-	matrix = np.loadtxt("testMat.txt")
+	matrix = np.loadtxt("new.txt")
 	env = Environment(matrix)
-	#env.printMat()
+
 	env.clacParity()
-
-	#print(env.isGoal())
-
-	print("========================some test==============================")
-	tst = Environment(matrix)
-	tstL = []
-	tstL.append(tst)
-	tst.clacParity()
-	tst.moveEmpty((1,1))
-	tstL.append(tst.copy())
-	k = tstL.pop()
-	k.printMat()
-	k = tstL.pop()
-	k.printMat()
-	print("===============================================================")
 
 	envQ=[]
 	visited = []
@@ -114,10 +97,13 @@ if __name__ == "__main__":
 
 	while not currentNodeEnv.isGoal():
 
-		currentNodeEnv=envQ.pop()
+		currentNodeEnv=envQ.pop(0)
 		print("=======poping=======")
 		currentNodeEnv.printMat()
 		print("====================")
+		if currentNodeEnv.isGoal():
+			print "found answer"
+			break;
 
 		boolCont=0
 		for node in visited:
@@ -131,28 +117,28 @@ if __name__ == "__main__":
 		if currentNodeEnv.moveEmpty((0,1)):
 			print("move left")
 			currentNodeEnv.printMat()
-			envQ.append(currentNodeEnv)
+			envQ.append(copy.deepcopy(currentNodeEnv))
 			currentNodeEnv.moveEmpty((0,-1))
 
 		if currentNodeEnv.moveEmpty((0,-1)):
 			print("move right")
 			currentNodeEnv.printMat()
-			envQ.append(currentNodeEnv)
+			envQ.append(copy.deepcopy(currentNodeEnv))
 			currentNodeEnv.moveEmpty((0,1))
 
 		if currentNodeEnv.moveEmpty((1,0)):
 			print("move down")
 			currentNodeEnv.printMat()
-			envQ.append(currentNodeEnv)
+			envQ.append(copy.deepcopy(currentNodeEnv))
 			currentNodeEnv.moveEmpty((-1,0))
 
 		if currentNodeEnv.moveEmpty((-1,0)):
 			print("move up")
 			currentNodeEnv.printMat()
-			envQ.append(currentNodeEnv)
+			envQ.append(copy.deepcopy(currentNodeEnv))
 			currentNodeEnv.moveEmpty((1,0))
 
-		visited.append(currentNodeEnv)
+		visited.append(copy.deepcopy(currentNodeEnv))
 		
 
 	sys.exit(0)

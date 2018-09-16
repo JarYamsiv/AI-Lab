@@ -7,6 +7,15 @@
 #
 #########################################
 
+	Here the agent is decision making process is random and markovian . This program is used to show 
+the curse of dimentionality. For that we'll consider three types of grids . each having one, two and three
+dimensions respectively.In each grid the start state is the origin and goal state is the vector vi=L for all
+i in dimensions.
+	Here we'll also demonstrate what are the changes when the degree of freedom is increased and decreased
+and the results are "when degree of freedom increases the number of steps taken is less and when the degree 
+of freedom is decreased the agent has to take more steps to reach goal state" . which is the result we
+expected.
+
 
 
 
