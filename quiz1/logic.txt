@@ -1,0 +1,14 @@
+######################
+#
+#	quiz 1
+#	Vismay Raj T (111601030)
+#
+#
+######################
+
+	> Run using 'make' in terminal
+	> Or run using 'python q1.py <ip.txt' in terminal
+	> edit the file 'ip.txt' for custom inputs
+	> coded using python 2 (will generate errors on python3 . please consider this)
+	> Implemented using a star
+	> see comments in code for further info

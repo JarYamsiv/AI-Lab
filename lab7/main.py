@@ -26,7 +26,7 @@ class Enivronment:
 		gDict[start]=0
 		fDict[start]=gDict[start]+heuristic(start,goal)
 		pq.heappush(openSet, ( fDict[start] , gDict[start] ,start)  )
-		#open set of the form (h,g,((x,y),d) )
+		#open set of the form (h,g,(x,y) )
 
 
 		while openSet:
@@ -35,13 +35,13 @@ class Enivronment:
 			closed.append(checkNode)
 
 			if checkNode == goal:
-				print "found the path is ->"
+				print "found, the path is ->"
 				meow = checkNode
 				while meow != (-1,-1):
 					print meow,"g:",gDict[meow],"f:",fDict[meow]
 					meow = parent[meow]
 
-				print "g values"
+				'''print "g values"
 				for items in gDict:
 					print items,":",gDict[items]
 
@@ -50,7 +50,7 @@ class Enivronment:
 					print items,":",fDict[items]
 
 				for p in openSet:
-					print p
+					print p'''
 
 				return
 
@@ -80,7 +80,7 @@ class Enivronment:
 if __name__ == "__main__":
 
 	nodes =[]
-	links={(0,0):[]}
+	links={}
 	f = open('nodes')
 	nodeIdent = f.readline() 
 	print nodeIdent
