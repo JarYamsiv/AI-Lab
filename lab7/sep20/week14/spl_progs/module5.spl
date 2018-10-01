@@ -1,0 +1,63 @@
+//Scheduler Module
+//print "module5";
+alias currentPid R0;
+alias processTableEntry R1;
+
+currentPid = [SYSTEM_STATUS_TABLE + 1];
+
+//PUSH bp ON TOP OF KERNEL STACK
+SP = SP + 1;
+[SP] = BP; 
+processTableEntry = PROCESS_TABLE + (currentPid * 16);
+[processTableEntry + 12] = SP % 512;
+[processTableEntry + 14] = PTBR;
+[processTableEntry + 15] = PTLR;
+
+alias counter R2;
+alias nextProcess R3;
+nextProcess = currentPid;
+counter = 1;
+
+//print "schduling";
+while(counter<=15) do
+	nextProcess = nextProcess + 1;
+	if(nextProcess > 15) then
+		nextProcess = 1;
+	endif;
+	if([PROCESS_TABLE + (nextProcess*16) + 4] == READY ||
+	[PROCESS_TABLE + (nextProcess*16) + 4] == CREATED) then
+		break;
+	endif;
+	counter = counter+1;
+endwhile;
+
+if([PROCESS_TABLE + (nextProcess*16) + 4] != READY &&
+[PROCESS_TABLE + (nextProcess*16) + 4] !=CREATED) then
+	nextProcess = 0;
+endif;
+
+processTableEntry = PROCESS_TABLE + (nextProcess * 16);
+
+//print "scheduled";
+SP = ([processTableEntry + 11]*512) +  ([processTableEntry + 12]);
+PTBR = [processTableEntry + 14];
+PTLR = [processTableEntry + 15];
+	
+[SYSTEM_STATUS_TABLE + 1] = nextProcess;
+
+if([processTableEntry + 4] == CREATED) then
+	SP = [processTableEntry + 13];
+	[processTableEntry + 4] = RUNNING;
+	[processTableEntry + 9] = 0;
+	ireturn;
+endif;
+
+[PROCESS_TABLE + nextProcess*16 + 4] = RUNNING;
+//Restore BP from top of kernel stack
+BP = [SP];
+SP = SP - 1;
+//print "return";
+return;
+
+	
+	
