@@ -50,20 +50,54 @@ class Grid(object):
 			for action in self.actions[states]:
 				if np.random.randint(0,acnum) == 1:
 					self.rewards[(states,action)] = np.random.randint(10,20)
+					print "reward " , states , "ac ", action , " = " , self.rewards[(states,action)]
 
 
-	def calcV(self,x,y,alpha):
+	def calcV(self,itr,alpha,gamma=0.02):
+		diff = False
 		for i in self.matrange:
 			for j in self.matrange:
 				Q=[]
-				for k in len(self.actions[(i,j)]):
-					Q.append(0.0)
+				#print "state:",(i,j),"itr:",itr
+				for k in range(len(self.actions[(i,j)])):
+					st = (i,j)
+					ac = self.actions[(i,j)][k]
+					pb = self.probs[(i,j)][k]
+
+					new_v = self.rewards.get((st,ac),0.0)
+
+					pr_sum = 0.0
+					for l in range(len(self.actions[(i,j)])):
+
+						state_dash = tuple(map(lambda x, y: x + y, (i,j), self.actions[(i,j)][l]))
+
+						pr_sum = pr_sum + self.probs[(i,j)][l]*self.v[state_dash[0]][state_dash[1]]
+
+
+					new_v = new_v + gamma*pr_sum
+					#print "\t action:",ac,"rwd:",self.rewards.get((st,ac),0.0),"new_v:",new_v,"old:",self.v[i][j]
+					Q.append(new_v)
+				diff = diff or (self.v[i][j]-max(Q))>alpha
+				self.v[i][j] = max(Q)
+		return diff
 
 
 
 if __name__ == "__main__":
 	np.random.seed(10)
 	grd = Grid(4)
-	print grd.mat
+	print grd.v
 	grd.setUpRewards(3,2)
+
+	print " "
+	diff = True
+	itr = 1
+	while diff:
+		diff=False
+		diff = grd.calcV(itr,0.00000001)
+		print grd.v
+		print "after iteration:",itr
+		print " "
+		itr = itr+1
+
 	sys.exit(0)
