@@ -22,17 +22,17 @@ class Grid(object):
 		self.matrange=range(0,dim)
 		self.eact={
 			(0,0):"stay",
-			(1,0):"down",
 			(-1,0):"up",
+			(1,0):"down",
 			(0,1):"right",
 			(0,-1):"left",
 			}
 		for i in range (0,dim):
 			for j in range (0,dim):
 				self.mat[i][j]=round(self.mat[i][j],2)
-				self.v[i][j] = round(self.v[i][j],5)
+				self.v[i][j] = 0.0
 
-		moves = [(1,0),(0,1),(-1,0),(0,-1)]
+		moves = [(-1,0),(0,1),(1,0),(0,-1)]
 
 		for i in range(0,dim):
 			for j in range(0,dim):
@@ -62,13 +62,23 @@ class Grid(object):
 
 		self.states = [ (x/dim,x%dim) for x in range(0,dim*dim) ]
 
+		for si in self.states:
+			summ = 0
+			for sj in self.states:
+				self.probs2[(si,sj)]=np.random.rand()
+				summ = summ+self.probs2[(si,sj)]
+			for sj in self.states:
+				self.probs2[(si,sj)]=self.probs2[(si,sj)]/summ
+
+
+
 	
 	def setUpRewards(self,stnum,acnum):
 		rwar =  np.random.choice(range(self.dim*self.dim),stnum)
 		print "chosen numbers =" , rwar
 		self.rewardStates = [(x/self.dim,x%self.dim) for x in rwar]
 		print "chosen states =" , self.rewardStates
-		self.rewards={((2,2),(0,-1)):53}
+		self.rewards={((2,2),(0,-1)):1}
 		for states in self.rewardStates:
 			for action in self.actions[states]:
 				if np.random.randint(0,acnum) == 1:
@@ -80,7 +90,7 @@ class Grid(object):
 		print "chosen numbers =" , rwar
 		self.rewardStates = [(x/self.dim,x%self.dim) for x in rwar]
 		print "chosen states =" , self.rewardStates
-		self.rewards={((2,2),(0,-1)):53}
+		self.rewards={((2,2),(0,-1)):1}
 		for states in self.states:
 			for action in self.actions[states]:
 				if True:
@@ -108,6 +118,10 @@ class Grid(object):
 
 						pr_sum = pr_sum + self.probs[(i,j)][l]*self.v[state_dash[0]][state_dash[1]]
 
+					'''pr_sum = 0.0
+					for sj in self.states:
+						pr_sum =pr_sum +self.probs2[((i,j),sj)]*self.v[sj[0]][sj[1]]'''
+
 
 					new_v = new_v + gamma*pr_sum
 					print "\t action:",ac,"rwd:",self.rewards.get((st,ac),0.0),"new_v:",new_v,"old:",self.v[i][j]
@@ -124,7 +138,7 @@ if __name__ == "__main__":
 	np.random.seed(10)
 	grd = Grid(4)
 	print grd.v
-	grd.setUpRewards(5,2)
+	grd.setUpRewards(0,2)
 
 	print " "
 	diff = True
