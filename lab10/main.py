@@ -1,6 +1,13 @@
 import sys
 import numpy as np
 
+POS_MAX = 0.6
+POS_MIN = -1.2
+VEL_MAX = 0.07
+VEL_MIN = -0.07
+POSITIONS = 181
+VELOCITIES = 141
+
 def pstate(val):
 	"""
 		the output will be 0 to 180 and
@@ -38,6 +45,11 @@ def newStateCalc(cp,cv,act):
 	vnew = vstate(new_vel)
 	return pnew,vnew
 
+def stateValidity(pos,vel):
+	condition = 0 <= pos and pos<POSITIONS
+	condition = condition and 0 <= vel and vel <VELOCITIES
+	return condition
+
 
 
 
@@ -62,8 +74,8 @@ class Car:
 	def __init__(self):
 
 		self.position=-0.5
-		self.numpos = 180
-		self.numvel = 140
+		self.numpos = POSITIONS
+		self.numvel = VELOCITIES
 		self.numstates = self.numpos*self.numvel
 		self.velocity=0.0
 		self.V = np.zeros((self.numpos,self.numvel)) # V[position_state][velocity_state] = 0.0	
@@ -80,6 +92,7 @@ class Car:
 			for p in range(self.numpos):
 				for v in range(self.numvel):
 					"""equivlent to for s in states"""
+					print "from state" , p ,v , "actual:" , posi(p) , velo(v)
 					v_array = []
 					for a in self.actions:
 						'''pos = posi(p)
@@ -89,7 +102,9 @@ class Car:
 						pnew = pstate(new_pos)
 						vnew = vstate(new_vel)'''
 						pnew,vnew = newStateCalc(p,v,a)
-						print pnew , vnew
+						if  not stateValidity(pnew,vnew):
+							continue
+						print "\tnext on act:",a,pnew , vnew , "actual:" , posi(pnew) , velo(vnew)
 						V = 0.0
 						""" v(t+1)(s) = max(a:A){ R(s,a)+g*sum[s:S]( p(s'|s,a)*v(t)(s') ) 
 							from the definitions of probability in this example
@@ -104,11 +119,14 @@ class Car:
 						V = V + self.gamma*self.V[pnew][vnew]
 						v_array.append(V)
 					#updating the value of V
+					if not v_array:
+						continue
 					new_V = max(v_array)
 					pi = np.argmax(v_array)
 					change = abs(self.V[p][v] - new_V)<self.alpha
 					converged = converged and change
 					self.V[p][v] = new_V
+					converged = True
 
 
 
@@ -120,5 +138,10 @@ class Car:
 
 if __name__=="__main__":
 	car = Car()
-	car.valueIteration()
+	'''for i in range(POSITIONS):
+		for j in range(VELOCITIES):
+			pos = posi(i)
+			vel = velo(j)
+			print pos, vel , pstate(pos) , vstate(vel)'''
+	#car.valueIteration()
 	sys.exit(0)
