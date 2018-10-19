@@ -1,0 +1,20 @@
+|------------------------------------------------------------------
+|
+|
+|		GROUP MEMBERS :
+|			Vismay Raj T  (111601030)
+|			Roshin Raphel (111601018)
+|			Shubham Gupta (111601024)
+|
+|
+|
+|-------------------------------------------------------------------
+
+	See the code for detailed documentation
+
+	-> Implementation of A star algorithm
+	-> Used heuristic is euclidean distance
+	-> Nodes and their corresponding edges are read from the files 'nodes'
+	   and 'edges' respectivly
+
+	->

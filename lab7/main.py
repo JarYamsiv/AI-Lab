@@ -3,15 +3,19 @@ import random
 import math
 import heapq as pq
 
+#used heuristic is euclidean distance
 def heuristic(nd1,nd2):
 	return math.sqrt((nd1[0]-nd2[0])**2+(nd1[1]-nd2[1])**2)
 
+#the class for storing the graph data and doing a star
 class Enivronment:
 	def __init__(self,nodes,links):
 		self.nodes=nodes
 		self.links=links
 
 	def Astar(self,start,goal):
+
+		# initialisation of variables
 		openSet = []
 		closed = []
 
@@ -29,6 +33,7 @@ class Enivronment:
 		#open set of the form (h,g,(x,y) )
 
 
+		#starting a star
 		while openSet:
 
 			f,g,checkNode = pq.heappop(openSet)
@@ -36,21 +41,12 @@ class Enivronment:
 
 			if checkNode == goal:
 				print "found, the path is ->"
+				# this segment of code is used to print the path
 				meow = checkNode
+
 				while meow != (-1,-1):
 					print meow,"g:",gDict[meow],"f:",fDict[meow]
 					meow = parent[meow]
-
-				'''print "g values"
-				for items in gDict:
-					print items,":",gDict[items]
-
-				print "f values"
-				for items in fDict:
-					print items,":",fDict[items]
-
-				for p in openSet:
-					print p'''
 
 				return
 
@@ -81,6 +77,8 @@ if __name__ == "__main__":
 
 	nodes =[]
 	links={}
+
+	# reading the nodes data
 	f = open('nodes')
 	nodeIdent = f.readline() 
 	print nodeIdent
@@ -93,6 +91,7 @@ if __name__ == "__main__":
 	
 	print nodes
 
+	#reading the edges data
 	edges = []
 	flinks = open('edges')
 	edgeIdent = flinks.readline() 
@@ -103,7 +102,8 @@ if __name__ == "__main__":
 		nx,ny,ngx,ngy,d=[float(x) for x in next(flinks).split()]
 		edges.append(  ( (int(nx),int(ny)) , (int(ngx),int(ngy)) , d ) )
     
-	
+	# converting data format to a dictionary
+
 	for edge in edges:
 		links[edge[0]].append((edge[1],edge[2]))
 		print edge[0],'-',edge[1],'-',edge[2]
@@ -113,7 +113,7 @@ if __name__ == "__main__":
 		for ng in links[node]:
 			print '\t**',ng[0],'->',ng[1]
 
-
+	# doing A star using the class Environment
 	Env = Enivronment(nodes,links)
 	Env.Astar((0,0),(6,2))
 

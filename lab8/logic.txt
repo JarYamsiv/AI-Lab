@@ -1,0 +1,14 @@
+|----------------------------------------------------------------------
+|
+|		Group members:
+|		Vismay Raj T  (111601030)
+|		Roshin Raphel (111601018)
+|		Shubham Gupta (111601024)
+|
+|
+|-----------------------------------------------------------------------
+
+	-> See the file new.py . the programm is explained well with comments.
+	-> Done using value iteration.
+	-> argmax is used to find optimal policy
+	-> then at last the optimal policy is represnted using a matrix

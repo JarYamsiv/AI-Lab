@@ -53,7 +53,7 @@ class Grid(object):
 					print "reward " , states , "ac ", action , " = " , self.rewards[(states,action)]
 
 
-	def calcV(self,itr,alpha,gamma=0.02):
+	def calcV(self,itr,alpha,gamma=0.05):
 		diff = False
 		for i in self.matrange:
 			for j in self.matrange:
