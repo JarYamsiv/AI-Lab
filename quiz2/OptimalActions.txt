@@ -1,0 +1,11 @@
+# In following matrix A, Aij is the optimal action at state ( i = overs_rem, j = batsman_rem )
+1    1    1
+1    1    1
+2    2    2
+2    2    2
+3    3    3
+3    3    3
+4    4    4
+4    4    4
+5    5    5
+5    5    5
