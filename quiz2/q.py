@@ -52,7 +52,7 @@ best_bowler = {}
 	the batsman will be out
 '''
 def get_probability(x):
-	return 1.0/B[x-1][1]
+	return 6.0/B[x-1][1]
 
 def get_run(x):
 	return B[x-1][0]
