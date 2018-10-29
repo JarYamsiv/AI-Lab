@@ -14,7 +14,6 @@ import sys
 | same bowler can bow two consecutive overs and all batsman are the same
 | minimise runs scored 
 |-----------------------------------------
-
 	SOLUTION IDEA
 	=============
 |-----------------------------------------------------------------------
@@ -45,14 +44,23 @@ dp_bowler = {}
 '''
 best_bowler = {}
 
-
+def gethash(arr):
+	str=""
+	for l in arr:
+		if l==0:
+			str += '0'
+		if l==1:
+			str += '1'
+		if l==2:
+			str += '2'
+	return str
 
 '''
 	for a certain bowler (id = x) what is the probability that
 	the batsman will be out
 '''
 def get_probability(x):
-	return 6.0/B[x-1][1]
+	return 1.0/B[x-1][1]
 
 def get_run(x):
 	return B[x-1][0]
@@ -63,62 +71,37 @@ def get_run(x):
 	array with best values. and using this we'll find
 	the best_bowler for a (run,over) combination
 '''
-def solveDP():
+def solveDP(wk_left,b_oversleft):
 	''' base cases '''
-	'''global dp_bowler
-	global dp
-	global best_bowler'''
+
+	overs_left=sum(b_oversleft)
+
+	if overs_left==0:
+		return 0
+
+	if wk_left==0:
+		return 0
+
+	s = gethash(b_oversleft)
+
+	if dp.get((wk_left,s),None) != None:
+		return dp[(wk_left,s)]
 
 
-	for over in range(max_overs):
-		dp[(over, 0)]    = 0
-		dp_bowler[(over,0)] = bowlers
-	for batsman_rem in range(max_batsman):
-		dp[(0, batsman_rem)] = 0
-		dp_bowler[(0,batsman_rem)] = bowlers
 
+	Q = []
+	for i in range(5):
+		if b_oversleft[i] > 0:
+			b_new     = deepcopy(b_oversleft)
+			b_new[i]  -= 1
+			exp_runs  = get_run(i) + (get_probability(i)*solveDP(wk_left-1,b_new)+(1- get_probability(i) )*solveDP(wk_left,b_new))
+			Q.append(exp_runs)
+		else:
+			Q.append(100000000)
 
-	for i in range(max_overs):
-		for j in range(max_batsman):
-			dp[(i,j)] = 0
-			dp_bowler[(i,j)] = deepcopy(bowlers)
-			best_bowler[(i,j)] = 1
-
-	for z in range(1):
-			
-		for batsman_rem in range(max_batsman):
-			for over in range(max_overs):
-				Q = []
-				print "at(batsman_rem:",batsman_rem+1,",over:",over+1,")"
-				print "\tbowler_arr:",dp_bowler[(over,batsman_rem)]
-				for bowler in dp_bowler[(over,batsman_rem)]:
-					out_prob = get_probability(bowler)
-					runs_yield = get_run(bowler)
-					#print "\t\tbowler",bowler,"r:",runs_yield,"p:",out_prob
-					if batsman_rem>0:
-						val = (out_prob*runs_yield)+ (1-out_prob)*(runs_yield+dp[(over,batsman_rem-1)])
-						Q.append(val)
-					else:
-						val = (out_prob*runs_yield)+(1-out_prob)*(runs_yield+dp[(over,batsman_rem)])
-						Q.append(val)
-
-			
-				if Q:
-					dp[(over,batsman_rem)] = np.min(Q)
-					#print "\t",Q
-
-					bbowler = dp_bowler[(over,batsman_rem)][np.argmin(Q)]
-					print "\tbest_bowler",bbowler
-					if over<max_overs-1:
-						for j in range(1,max_overs-over):
-							#print "\t\tpoping",bbowler
-							#print "\t\tfrom(",over+j,",",batsman_rem,")",dp_bowler[(over+j,batsman_rem)]
-							if dp_bowler[(over+j,batsman_rem)] and np.argmin(Q)<len(dp_bowler[(over+j,batsman_rem)]):
-								dp_bowler[(over+j,batsman_rem)].pop(np.argmin(Q))
-							#print "\t\tleaving",dp_bowler[(over+j,batsman_rem)]
-
-					best_bowler[(over,batsman_rem)] = bbowler
-		#break
+	dp[(wk_left,s)] = np.min(Q)
+	best_bowler[(wk_left,s)] = np.argmin(Q)
+	return dp[(wk_left,s)]
 
 
 
@@ -128,10 +111,14 @@ if __name__=="__main__":
 
 	'''global dp
 	global best_bowler'''
+	overs_left = [2,2,2,2,2]
 
-	solveDP()
+	solveDP(3,overs_left)
 
-	best_value = np.zeros((max_overs,max_batsman))
+	for k in dp:
+		print(k,dp[k],best_bowler.get(k,None))
+
+	'''best_value = np.zeros((max_overs,max_batsman))
 	best_action = np.zeros((max_overs,max_batsman))
 
 	for i in range(max_overs):
@@ -144,6 +131,6 @@ if __name__=="__main__":
 
 	heada = "In following matrix A, Aij is the optimal action at state ( i = overs_rem, j = batsman_rem )"
 	np.savetxt("OptimalActions.txt", best_action, delimiter = "    ", header = heada, fmt = "%d")
-
+	'''
 	
-	sys.exit(0)
+sys.exit(0)

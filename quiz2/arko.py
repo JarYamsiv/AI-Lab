@@ -107,6 +107,9 @@ for i in range(10):
     print("\n\n")    
     
 print("total runs = " , runs)
+
+for x in dp:
+    print(x,dp[x])
         
 """
 # printing results of all states
