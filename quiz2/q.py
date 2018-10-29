@@ -37,13 +37,18 @@ bowlers = [1,2,3,4,5,1,2,3,4,5]
 	dp[(over,batsman_rem)]
 '''
 dp = {}
-dp_bowler = {}
 
 '''
 	best_bowler is the bowler to be chosen at runs,overs
 '''
 best_bowler = {}
 
+
+'''
+	because python dictionary will not
+	recognize the same array as a key again
+	if it undergoes some append and pop
+'''
 def gethash(arr):
 	str=""
 	for l in arr:
