@@ -27,7 +27,8 @@ max_run = 10*6*6
 max_batsman = 3 #or max wickets
 max_overs = 10
 
-B = [ (3.0,33.0) ,(3.5,30.0), (4.0,24.0) ,(4.5,18.0) ,(5.0,15.0)]
+#B = [ (3.0,33.0) ,(3.5,30.0), (4.0,24.0) ,(4.5,18.0) ,(5.0,15.0)]
+B = [ (3.0,6.0) ,(3.5,30.0), (4.0,24.0) ,(4.5,18.0) ,(5.0,6.0)]
 bowlers = [1,2,3,4,5,1,2,3,4,5]
 
 '''
@@ -60,7 +61,7 @@ def gethash(arr):
 	the batsman will be out
 '''
 def get_probability(x):
-	return 1.0/B[x-1][1]
+	return 6.0/B[x-1][1]
 
 def get_run(x):
 	return B[x-1][0]
@@ -115,17 +116,10 @@ if __name__=="__main__":
 
 	solveDP(3,overs_left)
 
-	avg = 0
-	n = 0
-	for k in dp:
-		if k[0] != 0:
-			avg += dp[k]
-			n +=1
-	avg /= n
+
 	for k in dp:
 		print(k,dp[k],best_bowler.get(k,None))
 
-	print("average:",avg)
 
 	'''best_value = np.zeros((max_overs,max_batsman))
 	best_action = np.zeros((max_overs,max_batsman))
@@ -142,7 +136,7 @@ if __name__=="__main__":
 	np.savetxt("OptimalActions.txt", best_action, delimiter = "    ", header = heada, fmt = "%d")
 	'''
 
-	print("Simulating a game::")
+	print("Simulation>>")
 	p = []
 	for i in range(10):
 	    p.append(np.random.uniform(0,1)) #prob of getting out in over i- note these may not add up to 1(these are estimated stuff)
@@ -153,7 +147,7 @@ if __name__=="__main__":
 		if  (ol == [0,0,0,0,0] ):
 			print("match finished")
 			break
-		print("overs = {}, wickets = {}".format(ol,wk))
+		print("overs remaining = {}, wickets = {}".format(ol,wk))
 		Q = []
 		a     = best_bowler[(wk, gethash(ol))]
 		if  (ol[a] == 0):
@@ -175,8 +169,9 @@ if __name__=="__main__":
 				break
 		else :
 			print("wicket does not fall")
-		print("\n\n")    
+		print("\n=======================")    
     
 	print("total runs = " , runs)
+
 	
 	sys.exit(0)
