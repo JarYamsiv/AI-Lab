@@ -1,0 +1,23 @@
+|----------------------------------------------
+|
+|		AI LAB end-sem
+|
+|		name    : Vismay Raj T
+|		roll no.: 111601030
+|
+|
+|----------------------------------------------
+
+
+
+Qustion 1;
+	
+	> done using A star
+	> Edited quiz2 program
+	> encodings for the colors are given in the code
+	> further details are also provided as comments
+
+Question 2;
+
+	> implementation of genetic algorithm
+	> Choosing of
