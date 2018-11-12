@@ -66,6 +66,9 @@ class engine:
 		self.e = th
 		return [(np.linalg.norm(x-self.b))**2 for x in th]
 
+	def calcT_m3(self,T,a):
+		pass
+
 
 		
  

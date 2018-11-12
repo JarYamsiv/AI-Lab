@@ -14,6 +14,11 @@ from copy import deepcopy
 N_expiriments = 100
 N_episodes = 500000
 
+'''
+	the following three functions are used to move the 
+	cursor across the terminal
+'''
+
 def up(x=1):
     # My terminal breaks if we don't flush after the escape-code
     for i in range(x):
@@ -31,21 +36,31 @@ def erase():
 	sys.stdout.write('\x1b[2K')
 	sys.stdout.flush()
 
-def expression(qa,na,t):
-	return 0
-
+'''
+	This is the class for bandit or it
+	can also be considered as an environment
+'''
 class Bandit:
 	def __init__(self,probs):
 		self.N= len(probs)
 		self.probs = probs
 		pass
 	def get_reward(self, action):
+		'''
+			the probabilities of each arm is user defined
+			and when a certain arm's pull is happening
+			the reward is returned based on that.
+		'''
 		rand = np.random.random()  # [0.0,1.0)
 		reward = 1 if (rand < self.probs[action]) else 0
 		return reward
 
 
 class Agent:
+	'''
+		Agent slowly learns over the bandit's distribution
+		using the ucb1 algorithm
+	'''
 	def __init__(self,bandit,epsilon):
 		self.Q = np.zeros(bandit.N,dtype=np.float)
 		self.k = np.zeros(bandit.N,dtype=np.int)
@@ -55,7 +70,11 @@ class Agent:
 		self.itr=0
 		
 	def printStats(self):
-
+		'''
+			this is used to visualise agents current 
+			idea about the probability distribution of the 
+			bandits
+		'''
 		self.itr+=1
 		mx = max(self.Q)
 		if mx==0:
@@ -76,13 +95,22 @@ class Agent:
 		up(self.N+1)
 
 	def updateQ(self,action,reward):
+		'''
+			when a reward is obtained for an 
+			action the data on agents are updated
+		'''
 		self.k[action] += 1
 		self.Q[action] += (1./self.k[action]) * (reward - self.Q[action])
 
 	def get_ucb(self,bandit):
+		'''
+			ucb1 algo returns index of an arm to
+			be pulled
+		'''
 		total_rounds = sum(self.k)
-		exp = [self.val(x,total_rounds) for x in range(len(self.Q))]
-		return np.argmax(exp)
+		exp = np.array([self.val(x,total_rounds) for x in range(len(self.Q))])
+		exp_max = np.random.choice(np.flatnonzero(exp==exp.max()))
+		return exp_max
 
 	def val(self,x,y):
 		return self.Q[x]+np.sqrt(2*np.log(y)/self.k[x])
@@ -91,6 +119,9 @@ class Agent:
 
 if __name__ == "__main__":
 	print("Commencing program")
+	'''
+		user defined probabilities
+	'''
 	bandit = Bandit([0.10,0.50,0.60,0.80,0.10,0.25,0.60,0.45,0.75,0.65])
 	agent = Agent(bandit,0.01)
 

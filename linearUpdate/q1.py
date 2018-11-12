@@ -77,12 +77,13 @@ if __name__=="__main__":
 	plt.plot(x_axis,y_axis)'''
 
 	y_axis=np.array(theta3)
-	plt.plot(x_axis,y_axis,color='y')
+	plt.plot(x_axis,y_axis,color='y',label='a = 1.1')
 	y_axis=np.array(theta)
 	plt.plot(x_axis,y_axis)
 	y_axis=np.array(theta2)
 	plt.plot(x_axis,y_axis)
 
+	plt.legend(loc='upper left')
 
 
 

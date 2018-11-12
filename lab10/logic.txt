@@ -1,0 +1,11 @@
+|----------------------------------------------
+|
+|		MOUNTAIN CAR PROBLEM
+|
+|		Group members
+|			Vismay raj    (111601030)
+|			Shubham Gupta (111601024)
+|			Roshin Raphel (111601018)
+|-----------------------------------------------
+
+		> See the comments in the code for details

@@ -1,0 +1,14 @@
+|----------------------------------------
+|
+|		UCB ALGORITHM
+|		Group members:
+|			Vismay Raj (111601030)
+|			Shunham Gupta (111601024)
+|			roshin Raphel (111601018)
+|
+|----------------------------------------
+
+	> See the code for detailed explanation
+	> Implementation of both UCB and epsilon-greedy are 
+	  provided
+	> 

@@ -1,0 +1,25 @@
+|-----------------------------------------------------------
+|
+|			LINEAR UPDATE
+|			Group members:
+|				Vismay Raj    (111601030)
+|				Roshin Raphel (111601018)
+|				Shubham Gupta (111601024)
+|
+|------------------------------------------------------------
+
+		> uses linear update for better knowledge about
+			the mean of the distribution
+		> learns over noise
+
+		> first algorithm uses 0(t) = 0(t-1)+a*(e(t-1)-0(t-1))
+		  where a can be different and different results are produced
+		  following a's are used
+
+		  > a  = 1/t  --> converging
+		  > a  = 1/(t+k) --> same as 1/t
+		  > a  = |const|<1 --> converging slower than a=1/t
+		  > a  = |const|>1 diverging
+
+	 	> next algorithm implements 0(t) = sum(i=0->t){e(i)}
+	 		result --> converges but slow
