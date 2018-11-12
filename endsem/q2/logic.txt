@@ -10,14 +10,8 @@
 
 
 
-Qustion 1;
-	
-	> done using A star
-	> Edited quiz2 program
-	> encodings for the colors are given in the code
-	> further details are also provided as comments
-
 Question 2;
 
 	> implementation of genetic algorithm
-	> Choosing of
+	> Choosing of binary representation is described in the code
+	> the function parameters can be changed accordingly for desired results
